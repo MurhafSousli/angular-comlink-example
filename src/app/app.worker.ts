@@ -2,8 +2,8 @@
 
 import * as Comlink from 'comlink';
 
-export function test() {
-  return 'Hello World';
+export function test(text: string) {
+  return `"${text}" from worker`;
 }
 
 Comlink.expose(test);

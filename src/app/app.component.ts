@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import * as Comlink from 'comlink';
-import { from, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +9,18 @@ import { from, of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-  title: any = of('untitled');
 
-  test;
+  textStream = new BehaviorSubject('Text');
+  textInput = 'Hello World';
+  webWorkerFunc;
 
   ngOnInit() {
     const worker = new Worker('./app.worker', { type: 'module' });
-    this.test = Comlink.wrap(worker);
+    this.webWorkerFunc = Comlink.wrap(worker);
   }
 
   async run() {
-    this.title = from(this.test());
+    const text = await this.webWorkerFunc(this.textInput);
+    this.textStream.next(text);
   }
 }

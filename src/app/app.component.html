@@ -1,2 +1,6 @@
-<h1>{{title | async}}</h1>
-<button (click)="run()">Run</button>
+<h1>{{ textStream | async }}</h1>
+
+<div>
+  <input type="text" [(ngModel)]="textInput">
+  <button (click)="run()">Run</button>
+</div>
